@@ -13,7 +13,7 @@ function Navigation({ activeNavigationItem }: Props) {
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
                 <img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top me-3" />
-                <a className="navbar-brand" href="#">
+                <a className="navbar-brand" href="#" onClick={() => navigate("/")}>
                     418 Development
                 </a>
 
@@ -35,7 +35,6 @@ function Navigation({ activeNavigationItem }: Props) {
                             <button
                                 className={`nav-link ${activeNavigationItem === NavigationItem.HOME ? "active" : ""}`}
                                 aria-current="page"
-                                href="/"
                                 onClick={() => {
                                     navigate("/");
                                 }}

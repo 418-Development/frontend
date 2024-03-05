@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Button from "./components/Button";
 import Navigation from "./components/Navigation";
 import { NavigationItem } from "./enums/navigation";
 import Users from "./routes/users";
 
 function App() {
+    const navigate = useNavigate();
     const [count, setCount] = useState(0);
 
     return (
@@ -19,7 +20,9 @@ function App() {
                             <Button className="m-3" onClick={() => setCount((count) => count + 1)}>
                                 count is {count}
                             </Button>
-                            <a href="/users">Users</a>
+                            <a href="#" onClick={() => navigate("/users")}>
+                                Users
+                            </a>
                         </>
                     }
                 />
