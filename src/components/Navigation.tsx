@@ -33,49 +33,34 @@ function Navigation({ activeNavigationItem }: Props) {
             <div className="container-fluid justify-content-between">
                 <div className="d-flex align-items-center">
                     <img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top me-3" />
-                    <Button onClick={() => navigate("/")} style="link" className="navbar-brand">418 Development</Button>
+                    <Button onClick={() => navigate("/")} style="link" className="navbar-brand">BMI Calculator</Button>
                 </div>
-                <Button onClick={toggleNav} className="navbar-toggler ms-auto" type="button" > {/* Added ms-auto here */}
+                <Button onClick={toggleNav} className="navbar-toggler ms-auto" type="button"> {/* Ensures toggle is to the right */}
                     <span className="navbar-toggler-icon"></span>
                 </Button>
 
                 <div className={`collapse navbar-collapse ${!isNavCollapsed ? 'show' : ''}`} id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <Button
-                                onClick={() => navigate("/")}
-                                className={`nav-link ${activeNavigationItem === NavigationItem.HOME ? "active" : ""}`}
-                                style="link"
-                            >
-                                Home
-                            </Button>
-                        </li>
-                        <li className="nav-item">
-                            <Button
-                                onClick={() => navigate("/users")}
-                                className={`nav-link ${activeNavigationItem === NavigationItem.USERS ? "active" : ""}`}
-                                style="link"
-                            >
-                                Users
-                            </Button>
-                        </li>
+                        {/* Navigation items here, if needed */}
                     </ul>
-
-                    {!isAuthenticated ? (
-                        <div id="login-box" className="d-flex flex-column flex-lg-row align-items-center" style={{ gap: '0.5rem' }}>
-                            <input className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2" type="email" id="email" autoComplete="username" placeholder="Email" aria-label="Email" style={{ height: '40px' }} />
-                            <input className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2" type="password" id="password" autoComplete="current-password" placeholder="Password" aria-label="Password" style={{ height: '40px' }} />
-                            <div className="d-flex">
-                                <Button onClick={() => setIsAuthenticated(true)} style="success" outline={true} className="me-2 text-nowrap" type="submit">Login</Button>
-                                <Button onClick={() => { }} style="success" outline={true} className="text-nowrap" type="submit">Sign Up</Button>
+                    <div className="ms-auto"> {/* This will push your auth form to the right */}
+                        {!isAuthenticated ? (
+                            <div id="login-box" className="d-flex flex-column flex-lg-row align-items-center" style={{ gap: '0.5rem' }}>
+                                <input className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2" type="email" id="email" autoComplete="username" placeholder="Email" aria-label="Email" style={{ height: '40px' }} />
+                                <input className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2" type="password" id="password" autoComplete="current-password" placeholder="Password" aria-label="Password" style={{ height: '40px' }} />
+                                <div className="d-flex">
+                                    <Button onClick={() => setIsAuthenticated(true)} style="success" outline={true} className="me-2 text-nowrap" type="submit">Login</Button>
+                                    <Button onClick={() => { }} style="success" outline={true} className="text-nowrap" type="submit">Sign Up</Button>
+                                </div>
                             </div>
-                        </div>
-                    ) : (
-                        <Button onClick={() => setIsAuthenticated(false)} style="primary" outline={true} >Sign out</Button>
-                    )}
+                        ) : (
+                            <Button onClick={() => setIsAuthenticated(false)} style="primary" outline={true}>Sign out</Button>
+                        )}
+                    </div>
                 </div>
             </div>
         </nav>
+
     );
 }
 
