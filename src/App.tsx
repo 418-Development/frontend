@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import { NavigationItem } from "./enums/navigation";
@@ -9,6 +9,12 @@ import { initializeApp } from "firebase/app";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        if (document.cookie.startsWith("token=")) {
+            setIsAuthenticated(true);
+        }
+    }, []);
 
     const firebaseConfig = {
         apiKey: "AIzaSyBdsifyEDlciw050s-mGrkzpcTlgd8LnN0",
@@ -55,7 +61,7 @@ function App() {
 
     const signOut = async () => {
         console.log("signOut");
-        document.cookie = "token=;path=/;SameSite=Strict";
+        document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         setIsAuthenticated(false);
     };
 
@@ -73,10 +79,7 @@ function App() {
                                 onSignUp={signUp}
                                 onSignOut={signOut}
                             />
-                            <div className="container">
-                                <BMICalculatorWelcome />
-                                <BMICalculatorForm />
-                            </div>
+                            <div className="container mt-3">{isAuthenticated ? <BMICalculatorForm /> : <BMICalculatorWelcome />}</div>
                         </>
                     }
                 />
