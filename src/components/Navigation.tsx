@@ -1,17 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import logo from '../assets/Logo418-light.png';
-import { NavigationItem } from '../enums/navigation';
-import Button from './Button'; // Adjust the import path as necessary
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/Logo418-light.png";
+import { NavigationItem } from "../enums/navigation";
+import Button from "./Button"; // Adjust the import path as necessary
 
 interface Props {
     activeNavigationItem: NavigationItem;
+    isAuthenticated: boolean;
+    onLogin: (email: string, password: string) => void;
+    onSignUp: (email: string, password: string) => void;
+    onSignOut: () => void;
 }
 
-function Navigation({ activeNavigationItem }: Props) {
+function Navigation({ activeNavigationItem, isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
     const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+    const [emailInput, setEmailInput] = useState<string>("");
+    const [passwordInput, setPasswordInput] = useState<string>("");
 
     const toggleNav = () => setIsNavCollapsed(!isNavCollapsed);
 
@@ -23,10 +29,18 @@ function Navigation({ activeNavigationItem }: Props) {
             }
         };
 
-        window.addEventListener('resize', updateNavOnResize);
+        window.addEventListener("resize", updateNavOnResize);
 
-        return () => window.removeEventListener('resize', updateNavOnResize);
+        return () => window.removeEventListener("resize", updateNavOnResize);
     }, []);
+
+    const login = async () => {
+        onLogin(emailInput, passwordInput);
+    };
+
+    const signUp = async () => {
+        onSignUp(emailInput, passwordInput);
+    };
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -39,24 +53,49 @@ function Navigation({ activeNavigationItem }: Props) {
                     <span className="navbar-toggler-icon"></span>
                 </Button>
 
-                <div className={`collapse navbar-collapse ${!isNavCollapsed ? 'show' : ''}`} id="navbarSupportedContent">
+                <div className={`collapse navbar-collapse ${!isNavCollapsed ? "show" : ""}`} id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         {/* Navigation items here, if needed */}
                     </ul>
-                    <div className="ms-auto"> {/* This will push your auth form to the right */}
-                        {!isAuthenticated ? (
-                            <div id="login-box" className="d-flex flex-column flex-lg-row align-items-center" style={{ gap: '0.5rem' }}>
-                                <input className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2" type="email" id="email" autoComplete="username" placeholder="Email" aria-label="Email" style={{ height: '40px' }} />
-                                <input className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2" type="password" id="password" autoComplete="current-password" placeholder="Password" aria-label="Password" style={{ height: '40px' }} />
-                                <div className="d-flex">
-                                    <Button onClick={() => setIsAuthenticated(true)} style="success" outline={true} className="me-2 text-nowrap" type="submit">Login</Button>
-                                    <Button onClick={() => { }} style="success" outline={true} className="text-nowrap" type="submit">Sign Up</Button>
-                                </div>
+
+                    {!isAuthenticated ? (
+                        <div id="login-box" className="d-flex flex-column flex-lg-row align-items-center" style={{ gap: "0.5rem" }}>
+                            <input
+                                className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2"
+                                type="email"
+                                value={emailInput}
+                                onChange={(e) => setEmailInput(e.target.value)}
+                                id="email"
+                                autoComplete="username"
+                                placeholder="Email"
+                                aria-label="Email"
+                                style={{ height: "40px" }}
+                            />
+                            <input
+                                className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2"
+                                type="password"
+                                value={passwordInput}
+                                onChange={(e) => setPasswordInput(e.target.value)}
+                                id="password"
+                                autoComplete="current-password"
+                                placeholder="Password"
+                                aria-label="Password"
+                                style={{ height: "40px" }}
+                            />
+                            <div className="d-flex">
+                                <Button onClick={login} style="success" outline={true} className="me-2 text-nowrap" type="submit">
+                                    Login
+                                </Button>
+                                <Button onClick={signUp} style="success" outline={true} className="text-nowrap" type="submit">
+                                    Sign Up
+                                </Button>
                             </div>
-                        ) : (
-                            <Button onClick={() => setIsAuthenticated(false)} style="primary" outline={true}>Sign out</Button>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        <Button onClick={() => onSignOut()} style="primary" outline={true}>
+                            Sign out
+                        </Button>
+                    )}
                 </div>
             </div>
         </nav>
