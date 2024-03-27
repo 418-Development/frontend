@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import Button from "./components/Button";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import { NavigationItem } from "./enums/navigation";
 import BMICalculatorWelcome from "./components/BMICalculatorWelcome";
@@ -10,8 +8,6 @@ import Users from "./routes/users";
 
 
 function App() {
-    const navigate = useNavigate();
-    const [count, setCount] = useState(0);
 
     return (
         <div>
