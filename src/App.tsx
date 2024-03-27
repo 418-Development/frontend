@@ -7,7 +7,6 @@ import BMICalculatorForm from "./components/InputForm";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
-
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -63,11 +62,10 @@ function App() {
                                 onSignUp={signUp}
                                 onSignOut={signOut}
                             />
-                            <BMICalculatorWelcome />
-                            <BMICalculatorForm />
-
-
-
+                            <div className="container">
+                                <BMICalculatorWelcome />
+                                <BMICalculatorForm />
+                            </div>
                         </>
                     }
                 />
