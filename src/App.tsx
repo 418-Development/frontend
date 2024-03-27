@@ -17,7 +17,7 @@ function App() {
                     element={
                         <>
                             <Navigation activeNavigationItem={NavigationItem.HOME} />
-                            <Button className="m-3" onClick={() => setCount((count) => count + 1)}>
+                            <Button className="m-3" outline={true} style="primary" onClick={() => setCount((count) => count + 1)}>
                                 count is {count}
                             </Button>
                             <a href="#" onClick={() => navigate("/users")}>
