@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import { NavigationItem } from "./enums/navigation";
@@ -6,10 +6,9 @@ import BMICalculatorWelcome from "./components/BMICalculatorWelcome";
 import BMICalculatorForm from "./components/InputForm";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import Button from "./components/Button";
+
 
 function App() {
-    const [count, setCount] = useState(0);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const firebaseConfig = {

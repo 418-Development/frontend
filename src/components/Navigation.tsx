@@ -12,7 +12,7 @@ interface Props {
     onSignOut: () => void;
 }
 
-function Navigation({ activeNavigationItem, isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
+function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
     const navigate = useNavigate();
     const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
