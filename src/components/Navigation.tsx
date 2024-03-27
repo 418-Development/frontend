@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/Logo418-light.png';
 import { NavigationItem } from '../enums/navigation';
@@ -15,16 +15,29 @@ function Navigation({ activeNavigationItem }: Props) {
 
     const toggleNav = () => setIsNavCollapsed(!isNavCollapsed);
 
+    // Close navbar when resizing to desktop mode
+    useEffect(() => {
+        const updateNavOnResize = () => {
+            if (window.innerWidth >= 992) {
+                setIsNavCollapsed(true);
+            }
+        };
+
+        window.addEventListener('resize', updateNavOnResize);
+
+        return () => window.removeEventListener('resize', updateNavOnResize);
+    }, []);
+
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid justify-content-between">
                 <div className="d-flex align-items-center">
                     <img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top me-3" />
                     <Button onClick={() => navigate("/")} style="link" className="navbar-brand">418 Development</Button>
-                    <Button onClick={toggleNav} className="navbar-toggler" type="button">
-                        <span className="navbar-toggler-icon"></span>
-                    </Button>
                 </div>
+                <Button onClick={toggleNav} className="navbar-toggler ms-auto" type="button" > {/* Added ms-auto here */}
+                    <span className="navbar-toggler-icon"></span>
+                </Button>
 
                 <div className={`collapse navbar-collapse ${!isNavCollapsed ? 'show' : ''}`} id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
