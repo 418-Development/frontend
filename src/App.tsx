@@ -4,7 +4,7 @@ import Navigation from "./components/Navigation";
 import { NavigationItem } from "./enums/navigation";
 import BMICalculatorWelcome from "./components/BMICalculatorWelcome";
 import BMICalculatorForm from "./components/InputForm";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 function App() {
@@ -25,7 +25,17 @@ function App() {
 
     const login = async (email: string, password: string) => {
         console.log("login", email, password);
-        setIsAuthenticated(true);
+        try {
+            const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredentials.user;
+
+            const token = await user.getIdToken();
+
+            document.cookie = `token=${token};path=/;SameSite=Strict`;
+            setIsAuthenticated(true);
+        } catch (error) {
+            console.log("SignUp error", error);
+        }
     };
 
     const signUp = async (email: string, password: string) => {
@@ -45,6 +55,7 @@ function App() {
 
     const signOut = async () => {
         console.log("signOut");
+        document.cookie = "token=;path=/;SameSite=Strict";
         setIsAuthenticated(false);
     };
 
