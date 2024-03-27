@@ -1,6 +1,8 @@
-import { NavigationItem } from "../enums/navigation";
-import logo from "../assets/Logo418-light.png";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/Logo418-light.png';
+import { NavigationItem } from '../enums/navigation';
+import Button from './Button'; // Adjust the import path as necessary
 
 interface Props {
     activeNavigationItem: NavigationItem;
@@ -8,54 +10,57 @@ interface Props {
 
 function Navigation({ activeNavigationItem }: Props) {
     const navigate = useNavigate();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+    const toggleNav = () => setIsNavCollapsed(!isNavCollapsed);
+
+    // Close navbar when resizing to desktop mode
+    useEffect(() => {
+        const updateNavOnResize = () => {
+            if (window.innerWidth >= 992) {
+                setIsNavCollapsed(true);
+            }
+        };
+
+        window.addEventListener('resize', updateNavOnResize);
+
+        return () => window.removeEventListener('resize', updateNavOnResize);
+    }, []);
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
-            <div className="container-fluid">
-                <img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top me-3" />
-                <a className="navbar-brand" href="#" onClick={() => navigate("/")}>
-                    418 Development
-                </a>
-
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
+            <div className="container-fluid justify-content-between">
+                <div className="d-flex align-items-center">
+                    <img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top me-3" />
+                    <Button onClick={() => navigate("/")} style="link" className="navbar-brand">BMI Calculator</Button>
+                </div>
+                <Button onClick={toggleNav} className="navbar-toggler ms-auto" type="button"> {/* Ensures toggle is to the right */}
                     <span className="navbar-toggler-icon"></span>
-                </button>
+                </Button>
 
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <div className={`collapse navbar-collapse ${!isNavCollapsed ? 'show' : ''}`} id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <button
-                                className={`nav-link ${activeNavigationItem === NavigationItem.HOME ? "active" : ""}`}
-                                aria-current="page"
-                                onClick={() => {
-                                    navigate("/");
-                                }}
-                            >
-                                Home
-                            </button>
-                        </li>
-                        <li className="nav-item">
-                            <button
-                                className={`nav-link ${activeNavigationItem === NavigationItem.USERS ? "active" : ""}`}
-                                onClick={() => {
-                                    navigate("/users");
-                                }}
-                            >
-                                User
-                            </button>
-                        </li>
+                        {/* Navigation items here, if needed */}
                     </ul>
+                    <div className="ms-auto"> {/* This will push your auth form to the right */}
+                        {!isAuthenticated ? (
+                            <div id="login-box" className="d-flex flex-column flex-lg-row align-items-center" style={{ gap: '0.5rem' }}>
+                                <input className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2" type="email" id="email" autoComplete="username" placeholder="Email" aria-label="Email" style={{ height: '40px' }} />
+                                <input className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2" type="password" id="password" autoComplete="current-password" placeholder="Password" aria-label="Password" style={{ height: '40px' }} />
+                                <div className="d-flex">
+                                    <Button onClick={() => setIsAuthenticated(true)} style="success" outline={true} className="me-2 text-nowrap" type="submit">Login</Button>
+                                    <Button onClick={() => { }} style="success" outline={true} className="text-nowrap" type="submit">Sign Up</Button>
+                                </div>
+                            </div>
+                        ) : (
+                            <Button onClick={() => setIsAuthenticated(false)} style="primary" outline={true}>Sign out</Button>
+                        )}
+                    </div>
                 </div>
             </div>
         </nav>
+
     );
 }
 
