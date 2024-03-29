@@ -84,6 +84,10 @@ cd C:/Users/marcb/Projects/418-Development/frontend
 npm i
 ```
 
+### 1. Setup Firebase
+
+-   Replace the `/src/FirebaseConfig.ts` with your own config.
+
 ### 2. Start the Project
 
 To start the development server run:
@@ -103,7 +107,6 @@ To contribute to the project you first have to create a new task in the Sprit Pl
 -   Add a new item or pick a task from the `Todo` section.
 -   Press `Convert to issue` and select the `frontend` repository
 -   Assign yourself
--   Add the `frontend` label
 -   Set the status to `In Progress`
 -   Add the storypoints (1, 2, 3, 5, 8, 13, 20, 40, or 100) to `Estimate` [what are storypoints?](https://www.wrike.com/scrum-guide/faq/what-are-scrum-story-points/)
 -   Add the task to the current `Sprint`
