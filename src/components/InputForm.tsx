@@ -23,11 +23,13 @@ function BMICalculatorForm({ signOut }: Props) {
     const [height, setHeight] = useState<string>("");
     const [bmi, setBmi] = useState<string>("");
 
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
 
+    /*
     useEffect(() => {
         getUserinfo();
     }, []);
+    */
 
     const getUserinfo = async () => {
         const url = (import.meta.env.VITE_API_URL as string) + "userinfo";
@@ -69,7 +71,7 @@ function BMICalculatorForm({ signOut }: Props) {
     const submitBMICalculatorForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const url = (import.meta.env.VITE_API_URL as string) + "test/";
+        const url = (import.meta.env.VITE_API_URL as string) + "api/test/calculate_bmi";
 
         console.log("Update userinfo at", url);
 
@@ -77,11 +79,10 @@ function BMICalculatorForm({ signOut }: Props) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: document.cookie,
+                Authorization: document.cookie.substring(6),
             },
             body: JSON.stringify({
-                email: email,
-                name: username,
+                username: username,
                 age: parseInt(age),
                 weight: parseFloat(weight),
                 height: parseFloat(height),
@@ -91,7 +92,7 @@ function BMICalculatorForm({ signOut }: Props) {
         if (response.ok) {
             const data = await response.json();
             console.log("data", data);
-            setBmi(data);
+            setBmi(data.message);
         } else if (response.status == 401) {
             // Sign out user, because the token is most likely expired.
             signOut();
