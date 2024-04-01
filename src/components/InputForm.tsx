@@ -69,7 +69,7 @@ function BMICalculatorForm({ signOut }: Props) {
     const submitBMICalculatorForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const url = (import.meta.env.VITE_API_URL as string) + "update";
+        const url = (import.meta.env.VITE_API_URL as string) + "test/";
 
         console.log("Update userinfo at", url);
 

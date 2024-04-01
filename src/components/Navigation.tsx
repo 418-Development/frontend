@@ -8,11 +8,10 @@ interface Props {
     activeNavigationItem: NavigationItem;
     isAuthenticated: boolean;
     onLogin: (email: string, password: string) => void;
-    onSignUp: (email: string, password: string) => void;
     onSignOut: () => void;
 }
 
-function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
+function Navigation({ isAuthenticated, onLogin, onSignOut }: Props) {
     const navigate = useNavigate();
     const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
@@ -47,16 +46,18 @@ function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
             <div className="container-fluid justify-content-between">
                 <div className="d-flex align-items-center">
                     <img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top me-3" />
-                    <Button onClick={() => navigate("/")} style="link" className="navbar-brand">BMI Calculator</Button>
+                    <Button onClick={() => navigate("/")} style="link" className="navbar-brand">
+                        BMI Calculator
+                    </Button>
                 </div>
-                <Button onClick={toggleNav} className="navbar-toggler ms-auto" type="button"> {/* Ensures toggle is to the right */}
+                <Button onClick={toggleNav} className="navbar-toggler ms-auto" type="button">
+                    {" "}
+                    {/* Ensures toggle is to the right */}
                     <span className="navbar-toggler-icon"></span>
                 </Button>
 
                 <div className={`collapse navbar-collapse ${!isNavCollapsed ? "show" : ""}`} id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        {/* Navigation items here, if needed */}
-                    </ul>
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">{/* Navigation items here, if needed */}</ul>
 
                     {!isAuthenticated ? (
                         <div id="login-box" className="d-flex flex-column flex-lg-row align-items-center" style={{ gap: "0.5rem" }}>
@@ -99,7 +100,6 @@ function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
                 </div>
             </div>
         </nav>
-
     );
 }
 
