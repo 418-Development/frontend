@@ -18,7 +18,7 @@ function BMICalculatorForm() {
     const [height, setHeight] = useState<string>("");
     const [bmi, setBmi] = useState<string>("");
 
-    const [loading, setLoading] = useState<bool>(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getUserinfo();
