@@ -63,12 +63,12 @@ function Navigation({ isAuthenticated, onLogin, onSignOut }: Props) {
                         <div id="login-box" className="d-flex flex-column flex-lg-row align-items-center" style={{ gap: "0.5rem" }}>
                             <input
                                 className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2"
-                                type="email"
+                                type="text"
                                 value={emailInput}
                                 onChange={(e) => setEmailInput(e.target.value)}
                                 id="email"
                                 autoComplete="username"
-                                placeholder="Email"
+                                placeholder="Username"
                                 aria-label="Email"
                                 style={{ height: "40px" }}
                             />
@@ -87,7 +87,12 @@ function Navigation({ isAuthenticated, onLogin, onSignOut }: Props) {
                                 <Button onClick={login} style="success" outline={true} className="me-2 text-nowrap" type="submit">
                                     Login
                                 </Button>
-                                <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSignUpForm" type="button">
+                                <button
+                                    className="btn btn-primary text-nowrap"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalSignUpForm"
+                                    type="button"
+                                >
                                     Sign Up
                                 </button>
                             </div>
