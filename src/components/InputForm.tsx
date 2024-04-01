@@ -9,7 +9,7 @@ interface Props {
 
 interface Userinfo {
     email: string;
-    name: string;
+    username: string;
     age: number;
     height: number;
     weight: number;
@@ -23,23 +23,21 @@ function BMICalculatorForm({ signOut }: Props) {
     const [height, setHeight] = useState<string>("");
     const [bmi, setBmi] = useState<string>("");
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    /*
     useEffect(() => {
         getUserinfo();
     }, []);
-    */
 
     const getUserinfo = async () => {
-        const url = (import.meta.env.VITE_API_URL as string) + "userinfo";
+        const url = (import.meta.env.VITE_API_URL as string) + "api/test/userinfo";
 
         console.log("Request userinfo from", url);
         const response = await fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: document.cookie,
+                Authorization: document.cookie.substring(6),
             },
         });
 
@@ -49,7 +47,7 @@ function BMICalculatorForm({ signOut }: Props) {
 
             const userinfo = data as Userinfo;
 
-            setUsername(userinfo.name);
+            setUsername(userinfo.username);
             setEmail(userinfo.email);
             setAge(userinfo.age.toString());
             setWeight(userinfo.weight.toString());
