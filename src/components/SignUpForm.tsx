@@ -65,9 +65,10 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                             }}
                         >
                             <div className="form-group">
-                                <label htmlFor="usereEmail">Email address</label>
+                                <label htmlFor="userEmail">Email address</label>
                                 <input
                                     type="email"
+                                    autoComplete="email"
                                     onChange={(e) => {
                                         setEmail(e.target.value);
                                     }}
@@ -84,6 +85,7 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                 <label htmlFor="Username">Username</label>
                                 <input
                                     type="text"
+                                    autoComplete="username"
                                     onChange={(e) => {
                                         setUsername(e.target.value);
                                     }}
@@ -97,6 +99,7 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                 <label htmlFor="userPassword">Password</label>
                                 <input
                                     type="password"
+                                    autoComplete="new-password"
                                     onChange={(e) => {
                                         setPassword(e.target.value);
                                     }}
@@ -110,6 +113,7 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                 <label htmlFor="verifyUserPassword">Verify User Password</label>
                                 <input
                                     type="password"
+                                    autoComplete="new-password"
                                     ref={passwordValidationInput}
                                     onChange={(e) => {
                                         setVerifyPassword(e.target.value);

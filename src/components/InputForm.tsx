@@ -121,10 +121,11 @@ function BMICalculatorForm({ signOut }: Props) {
                     }}
                 >
                     <div className="input-group mb-3 bg-secondary rounded">
-                        <span className="input-group-text bg-dark text-white">Name</span>
+                        <span className="input-group-text bg-dark text-white">Username</span>
                         <input
                             type="text"
                             name="name"
+                            autoComplete="username"
                             className="form-control bg-dark text-white border-secondary"
                             placeholder="Your Name"
                             required
@@ -132,6 +133,7 @@ function BMICalculatorForm({ signOut }: Props) {
                             max="35"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            disabled
                         />
                     </div>
                     <div className="input-group mb-3 bg-secondary rounded">
