@@ -5,28 +5,46 @@
 .bmi-scale-container {
     display: flex;
     flex-direction: row;
+    position: relative;
 }
 
 .bmi-scale {
     flex: 1;
     height: 50px;
 
-    border: 1px solid white;
+    position: relative;
+}
+
+#bmi-indicator {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -60%);
 }
 
 #underweight {
     flex: calc(18.5 - 15);
-    background-color: blue;
 }
 #healthy {
     flex: calc(25 - 18.5);
-    background-color: green;
 }
 #overweight {
     flex: calc(30 - 25);
-    background-color: orange;
 }
 #obese {
     flex: calc(45 - 30);
-    background-color: red;
+}
+
+.description {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    transform: translate(50%, 100%);
+
+    height: 50px;
+
+    font-weight: bold;
 }
