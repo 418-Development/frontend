@@ -86,9 +86,9 @@ function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
                                 <Button onClick={login} style="success" outline={true} className="me-2 text-nowrap" type="submit">
                                     Login
                                 </Button>
-                                <Button onClick={signUp} style="success" outline={true} className="text-nowrap" type="submit">
+                                <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSignUpForm" type="button">
                                     Sign Up
-                                </Button>
+                                </button>
                             </div>
                         </div>
                     ) : (
