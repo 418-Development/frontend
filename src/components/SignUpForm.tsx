@@ -13,13 +13,23 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
     const [passwordInput, setPassword] = useState<string>(password);
     const [verifyPassword, setVerifyPassword] = useState<string>("");
 
+    const emailValidation = useRef<HTMLDivElement>(null);
+    const emailValidationInput = useRef<HTMLInputElement>(null);
+
+    const usernameValidation = useRef<HTMLDivElement>(null);
+    const usernameValidationInput = useRef<HTMLInputElement>(null);
+
     const passwordValidation = useRef<HTMLDivElement>(null);
     const passwordValidationInput = useRef<HTMLInputElement>(null);
+    const closeButton = useRef<HTMLButtonElement>(null);
 
     const checkPassword = async () => {
         if (passwordInput == verifyPassword) {
-            await signup();
-            await signin(usernameInput, passwordInput);
+            const success = await signup();
+            if (success) {
+                await signin(usernameInput, passwordInput);
+                closeButton.current?.click();
+            }
         } else if (passwordValidation.current != null) {
             passwordValidationInput.current?.classList.add("is-invalid");
             passwordValidation.current.textContent = "Passwords are not the same. Please try again.";
@@ -43,9 +53,21 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
 
         console.log("http://localhost:8080/api/auth/signup", response.ok, response.status);
 
-        const json = await response.json();
+        if (!response.ok) {
+            const json = await response.json();
 
-        console.log("json", json);
+            console.log("json", json);
+            const msg: string = json.message;
+            if (msg.toLowerCase().includes("email")) {
+                emailValidationInput.current?.classList.add("is-invalid");
+                if (emailValidation.current) emailValidation.current.textContent = msg;
+            } else {
+                usernameValidationInput.current?.classList.add("is-invalid");
+                if (usernameValidation.current) usernameValidation.current.textContent = msg;
+            }
+        }
+
+        return response.ok;
     };
 
     return (
@@ -54,29 +76,34 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5>Sign Up Form</h5>
+                        <button ref={closeButton} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div className="modal-body">
-                        <form
-                            action=""
-                            onSubmit={(e) => {
-                                e.preventDefault();
 
-                                checkPassword();
-                            }}
-                        >
+                    <form
+                        action=""
+                        onSubmit={(e) => {
+                            e.preventDefault();
+
+                            checkPassword();
+                        }}
+                    >
+                        <div className="modal-body">
                             <div className="form-group">
                                 <label htmlFor="userEmail">Email address</label>
                                 <input
+                                    ref={emailValidationInput}
                                     type="email"
                                     autoComplete="email"
                                     onChange={(e) => {
                                         setEmail(e.target.value);
+                                        emailValidationInput.current?.classList.remove("is-invalid");
                                     }}
                                     className="form-control"
                                     id="userEmail"
                                     aria-describedby="emailHelp"
                                     placeholder="Enter email"
                                 />
+                                <div className="invalid-feedback" ref={emailValidation}></div>
                                 <small id="emailHelp" className="form-text text-muted">
                                     We'll never share your email with anyone else.
                                 </small>
@@ -84,16 +111,19 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                             <div className="form-group">
                                 <label htmlFor="Username">Username</label>
                                 <input
+                                    ref={usernameValidationInput}
                                     type="text"
                                     autoComplete="username"
                                     onChange={(e) => {
                                         setUsername(e.target.value);
+                                        usernameValidationInput.current?.classList.remove("is-invalid");
                                     }}
                                     className="form-control"
                                     id="username"
                                     placeholder="Username"
                                     value={usernameInput}
                                 />
+                                <div className="invalid-feedback" ref={usernameValidation}></div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="userPassword">Password</label>
@@ -124,12 +154,16 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                 />
                                 <div className="invalid-feedback" ref={passwordValidation}></div>
                             </div>
-                            <Button type="submit" className="btn btn-primary">
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" className="btn btn-primary">
                                 Submit
-                            </Button>
-                        </form>
-                    </div>
-                    <div className="modal-footer"></div>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
