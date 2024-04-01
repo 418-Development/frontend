@@ -142,7 +142,7 @@ function BMICalculatorForm({ signOut }: Props) {
                             className="form-control bg-dark text-white border-secondary"
                             placeholder="Age"
                             required
-                            min="0"
+                            min="18"
                             max="120"
                             value={age}
                             onChange={(e) => setAge(e.target.value)}
