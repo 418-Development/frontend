@@ -29,7 +29,9 @@ function App() {
 
             const token = await user.getIdToken();
 
-            document.cookie = `token=${token};path=/;SameSite=Strict`;
+            const date = new Date();
+            date.setTime(date.getTime() + 15 * 60 * 1000);
+            document.cookie = `token=${token};expires="${date.toUTCString()};SameSite=Strict;path=/`;
             setIsAuthenticated(true);
         } catch (error) {
             console.log("SignUp error", error);
@@ -44,7 +46,9 @@ function App() {
 
             const token = await user.getIdToken();
 
-            document.cookie = `token=${token};path=/;SameSite=Strict`;
+            const date = new Date();
+            date.setTime(date.getTime() + 5 * 60 * 1000);
+            document.cookie = `token=${token};expires="${date.toUTCString()};SameSite=Strict;path=/`;
             setIsAuthenticated(true);
         } catch (error) {
             console.log("SignUp error", error);
@@ -71,7 +75,9 @@ function App() {
                                 onSignUp={signUp}
                                 onSignOut={signOut}
                             />
-                            <div className="container mt-3">{isAuthenticated ? <BMICalculatorForm /> : <BMICalculatorWelcome />}</div>
+                            <div className="container mt-3">
+                                {isAuthenticated ? <BMICalculatorForm signOut={signOut} /> : <BMICalculatorWelcome />}
+                            </div>
                         </>
                     }
                 />

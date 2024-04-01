@@ -1,6 +1,11 @@
 import { FormEvent, useEffect, useState } from "react";
 import Button from "../components/Button";
 import "../index.css";
+import BMIDisplay from "./BMIDisplay";
+
+interface Props {
+    signOut: () => void;
+}
 
 interface Userinfo {
     email: string;
@@ -10,7 +15,7 @@ interface Userinfo {
     weight: number;
 }
 
-function BMICalculatorForm() {
+function BMICalculatorForm({ signOut }: Props) {
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [age, setAge] = useState<string>("");
@@ -18,7 +23,7 @@ function BMICalculatorForm() {
     const [height, setHeight] = useState<string>("");
     const [bmi, setBmi] = useState<string>("");
 
-    const [loading, setLoading] = useState<bool>(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getUserinfo();
@@ -47,6 +52,9 @@ function BMICalculatorForm() {
             setAge(userinfo.age.toString());
             setWeight(userinfo.weight.toString());
             setHeight(userinfo.height.toString());
+        } else if (response.status == 401) {
+            // Sign out user, because the token is most likely expired.
+            signOut();
         } else {
             console.log("Failed to get userinfo", response);
             setUsername("");
@@ -84,6 +92,9 @@ function BMICalculatorForm() {
             const data = await response.json();
             console.log("data", data);
             setBmi(data);
+        } else if (response.status == 401) {
+            // Sign out user, because the token is most likely expired.
+            signOut();
         } else {
             console.log("Failed to update userinfo", response);
             setBmi("");
@@ -169,7 +180,7 @@ function BMICalculatorForm() {
                     </div>
                 </form>
             )}
-            {bmi !== "" ? <h2>Your BMI is {bmi}</h2> : <></>}
+            {bmi !== "" ? <BMIDisplay bmi={bmi} /> : <></>}
         </>
     );
 }

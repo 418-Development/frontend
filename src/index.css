@@ -1,3 +1,32 @@
 .input-group-text {
-  width: 150px !important;
+    width: 150px !important;
+}
+
+.bmi-scale-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.bmi-scale {
+    flex: 1;
+    height: 50px;
+
+    border: 1px solid white;
+}
+
+#underweight {
+    flex: calc(18.5 - 15);
+    background-color: blue;
+}
+#healthy {
+    flex: calc(25 - 18.5);
+    background-color: green;
+}
+#overweight {
+    flex: calc(30 - 25);
+    background-color: orange;
+}
+#obese {
+    flex: calc(45 - 30);
+    background-color: red;
 }
