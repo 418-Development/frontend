@@ -9,10 +9,13 @@ interface Props {
     setPassword: React.Dispatch<React.SetStateAction<string>>;
 }
 
+// function that will validate the input of the form and send it to the backend via a post request. The Return is the dialog window that the user will interact with
 function SignUpForm({ signin, setUsername, setPassword, username = "", password = "" }: Props) {
+    // These constants are used with useState to remember the variables the user puts in during any reloading of the page
     const [email, setEmail] = useState<string>("");
     const [verifyPassword, setVerifyPassword] = useState<string>("");
 
+    // References to HTML elements that we want to access to inform the user of invalid password checks
     const emailValidation = useRef<HTMLDivElement>(null);
     const emailValidationInput = useRef<HTMLInputElement>(null);
 
