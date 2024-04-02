@@ -8,15 +8,15 @@ interface Props {
     activeNavigationItem: NavigationItem;
     isAuthenticated: boolean;
     onLogin: (email: string, password: string) => void;
-    onSignUp: (email: string, password: string) => void;
     onSignOut: () => void;
+    onSignUp: (email: string, password: string) => void;
 }
 
-function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
+function Navigation({ isAuthenticated, onLogin, onSignOut, onSignUp }: Props) {
     const navigate = useNavigate();
     const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
-    const [emailInput, setEmailInput] = useState<string>("");
+    const [usernameInput, setUsernameInput] = useState<string>("");
     const [passwordInput, setPasswordInput] = useState<string>("");
 
     const toggleNav = () => setIsNavCollapsed(!isNavCollapsed);
@@ -35,11 +35,7 @@ function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
     }, []);
 
     const login = async () => {
-        onLogin(emailInput, passwordInput);
-    };
-
-    const signUp = async () => {
-        onSignUp(emailInput, passwordInput);
+        onLogin(usernameInput, passwordInput);
     };
 
     return (
@@ -47,28 +43,30 @@ function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
             <div className="container-fluid justify-content-between">
                 <div className="d-flex align-items-center">
                     <img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top me-3" />
-                    <Button onClick={() => navigate("/")} style="link" className="navbar-brand">BMI Calculator</Button>
+                    <Button onClick={() => navigate("/")} style="link" className="navbar-brand">
+                        BMI Calculator
+                    </Button>
                 </div>
-                <Button onClick={toggleNav} className="navbar-toggler ms-auto" type="button"> {/* Ensures toggle is to the right */}
+                <Button onClick={toggleNav} className="navbar-toggler ms-auto" type="button">
+                    {" "}
+                    {/* Ensures toggle is to the right */}
                     <span className="navbar-toggler-icon"></span>
                 </Button>
 
                 <div className={`collapse navbar-collapse ${!isNavCollapsed ? "show" : ""}`} id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        {/* Navigation items here, if needed */}
-                    </ul>
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">{/* Navigation items here, if needed */}</ul>
 
                     {!isAuthenticated ? (
                         <div id="login-box" className="d-flex flex-column flex-lg-row align-items-center" style={{ gap: "0.5rem" }}>
                             <input
                                 className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2"
-                                type="email"
-                                value={emailInput}
-                                onChange={(e) => setEmailInput(e.target.value)}
+                                type="text"
+                                value={usernameInput}
+                                onChange={(e) => setUsernameInput(e.target.value)}
                                 id="email"
                                 autoComplete="username"
-                                placeholder="Email"
-                                aria-label="Email"
+                                placeholder="Username"
+                                aria-label="Username"
                                 style={{ height: "40px" }}
                             />
                             <input
@@ -86,9 +84,17 @@ function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
                                 <Button onClick={login} style="success" outline={true} className="me-2 text-nowrap" type="submit">
                                     Login
                                 </Button>
-                                <Button onClick={signUp} style="success" outline={true} className="text-nowrap" type="submit">
+                                <button
+                                    className="btn btn-outline-primary text-nowrap"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalSignUpForm"
+                                    type="button"
+                                    onClick={() => {
+                                        onSignUp(usernameInput, passwordInput);
+                                    }}
+                                >
                                     Sign Up
-                                </Button>
+                                </button>
                             </div>
                         </div>
                     ) : (
@@ -99,7 +105,6 @@ function Navigation({ isAuthenticated, onLogin, onSignUp, onSignOut }: Props) {
                 </div>
             </div>
         </nav>
-
     );
 }
 
