@@ -4,13 +4,13 @@ import Navigation from "./components/Navigation";
 import { NavigationItem } from "./enums/navigation";
 import BMICalculatorWelcome from "./components/BMICalculatorWelcome";
 import BMICalculatorForm from "./components/InputForm";
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import firebaseConfig from "./FirebaseConfig";
 import SignUpForm from "./components/SignUpForm";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     useEffect(() => {
         if (document.cookie.startsWith("token=")) {
@@ -18,38 +18,38 @@ function App() {
         }
     }, []);
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    const login = async (username: string, password: string) => {
+        const url = (import.meta.env.VITE_API_URL as string) + "api/auth/signin";
 
-    const login = async (email: string, password: string) => {
-        console.log("login", email, password);
-        try {
-            const userCredentials = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredentials.user;
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            }),
+        });
 
-            const token = await user.getIdToken();
+        if (response.ok) {
+            const json = await response.json();
 
-            document.cookie = `token=${token};path=/;SameSite=Strict`;
+            const date = new Date();
+            date.setTime(date.getTime() + 15 * 60 * 1000);
+            document.cookie = `token=${json.tokenType} ${json.accessToken};expires="${date.toUTCString()};SameSite=Strict;path=/`;
+
             setIsAuthenticated(true);
-        } catch (error) {
-            console.log("SignUp error", error);
         }
+
+        console.log(url, response.ok, response.status);
     };
 
-    const signUp = async (email: string, password: string) => {
-        console.log("signUp", email, password);
-        try {
-            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredentials.user;
+    const singUp = async (username: string, password: string) => {
+        console.log("username", username, "password", password);
 
-            const token = await user.getIdToken();
-
-            document.cookie = `token=${token};path=/;SameSite=Strict`;
-            setIsAuthenticated(true);
-        } catch (error) {
-            console.log("SignUp error", error);
-        }
+        setUsername(username);
+        setPassword(password);
     };
 
     const signOut = async () => {
@@ -69,12 +69,21 @@ function App() {
                                 activeNavigationItem={NavigationItem.HOME}
                                 isAuthenticated={isAuthenticated}
                                 onLogin={login}
-                                onSignUp={signUp}
                                 onSignOut={signOut}
+                                onSignUp={singUp}
                             />
-                            <div className="container mt-3">{isAuthenticated ? <BMICalculatorForm /> : <BMICalculatorWelcome />}</div>
 
-                            <SignUpForm></SignUpForm>
+                            <div className="container mt-3">
+                                {isAuthenticated ? <BMICalculatorForm signOut={signOut} /> : <BMICalculatorWelcome />}
+                            </div>
+
+                            <SignUpForm
+                                signin={login}
+                                username={username}
+                                password={password}
+                                setPassword={setPassword}
+                                setUsername={setUsername}
+                            ></SignUpForm>
                         </>
                     }
                 />

@@ -1,18 +1,22 @@
 import { FormEvent, useEffect, useState } from "react";
 import Button from "../components/Button";
 import "../index.css";
+import BMIDisplay from "./BMIDisplay";
+
+interface Props {
+    signOut: () => void;
+}
 
 interface Userinfo {
     email: string;
-    name: string;
+    username: string;
     age: number;
     height: number;
     weight: number;
 }
 
-function BMICalculatorForm() {
+function BMICalculatorForm({ signOut }: Props) {
     const [username, setUsername] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
     const [age, setAge] = useState<string>("");
     const [weight, setWeight] = useState<string>("");
     const [height, setHeight] = useState<string>("");
@@ -25,14 +29,14 @@ function BMICalculatorForm() {
     }, []);
 
     const getUserinfo = async () => {
-        const url = (import.meta.env.VITE_API_URL as string) + "userinfo";
+        const url = (import.meta.env.VITE_API_URL as string) + "api/test/userinfo";
 
         console.log("Request userinfo from", url);
         const response = await fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: document.cookie,
+                Authorization: document.cookie.substring(6),
             },
         });
 
@@ -42,15 +46,16 @@ function BMICalculatorForm() {
 
             const userinfo = data as Userinfo;
 
-            setUsername(userinfo.name);
-            setEmail(userinfo.email);
+            setUsername(userinfo.username);
             setAge(userinfo.age.toString());
             setWeight(userinfo.weight.toString());
             setHeight(userinfo.height.toString());
+        } else if (response.status == 401) {
+            // Sign out user, because the token is most likely expired.
+            signOut();
         } else {
             console.log("Failed to get userinfo", response);
             setUsername("");
-            setEmail("");
             setAge("");
             setWeight("");
             setHeight("");
@@ -61,7 +66,7 @@ function BMICalculatorForm() {
     const submitBMICalculatorForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const url = (import.meta.env.VITE_API_URL as string) + "update";
+        const url = (import.meta.env.VITE_API_URL as string) + "api/test/calculate_bmi";
 
         console.log("Update userinfo at", url);
 
@@ -69,11 +74,10 @@ function BMICalculatorForm() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: document.cookie,
+                Authorization: document.cookie.substring(6),
             },
             body: JSON.stringify({
-                email: email,
-                name: username,
+                username: username,
                 age: parseInt(age),
                 weight: parseFloat(weight),
                 height: parseFloat(height),
@@ -83,7 +87,10 @@ function BMICalculatorForm() {
         if (response.ok) {
             const data = await response.json();
             console.log("data", data);
-            setBmi(data);
+            setBmi(data.message);
+        } else if (response.status == 401) {
+            // Sign out user, because the token is most likely expired.
+            signOut();
         } else {
             console.log("Failed to update userinfo", response);
             setBmi("");
@@ -109,10 +116,11 @@ function BMICalculatorForm() {
                     }}
                 >
                     <div className="input-group mb-3 bg-secondary rounded">
-                        <span className="input-group-text bg-dark text-white">Name</span>
+                        <span className="input-group-text bg-dark text-white">Username</span>
                         <input
                             type="text"
                             name="name"
+                            autoComplete="username"
                             className="form-control bg-dark text-white border-secondary"
                             placeholder="Your Name"
                             required
@@ -120,6 +128,7 @@ function BMICalculatorForm() {
                             max="35"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            disabled
                         />
                     </div>
                     <div className="input-group mb-3 bg-secondary rounded">
@@ -130,7 +139,7 @@ function BMICalculatorForm() {
                             className="form-control bg-dark text-white border-secondary"
                             placeholder="Age"
                             required
-                            min="0"
+                            min="18"
                             max="120"
                             value={age}
                             onChange={(e) => setAge(e.target.value)}
@@ -169,7 +178,7 @@ function BMICalculatorForm() {
                     </div>
                 </form>
             )}
-            {bmi !== "" ? <h2>Your BMI is {bmi}</h2> : <></>}
+            {bmi !== "" ? <BMIDisplay bmi={bmi} /> : <></>}
         </>
     );
 }
