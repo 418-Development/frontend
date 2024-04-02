@@ -17,7 +17,6 @@ interface Userinfo {
 
 function BMICalculatorForm({ signOut }: Props) {
     const [username, setUsername] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
     const [age, setAge] = useState<string>("");
     const [weight, setWeight] = useState<string>("");
     const [height, setHeight] = useState<string>("");
@@ -48,7 +47,6 @@ function BMICalculatorForm({ signOut }: Props) {
             const userinfo = data as Userinfo;
 
             setUsername(userinfo.username);
-            setEmail(userinfo.email);
             setAge(userinfo.age.toString());
             setWeight(userinfo.weight.toString());
             setHeight(userinfo.height.toString());
@@ -58,7 +56,6 @@ function BMICalculatorForm({ signOut }: Props) {
         } else {
             console.log("Failed to get userinfo", response);
             setUsername("");
-            setEmail("");
             setAge("");
             setWeight("");
             setHeight("");

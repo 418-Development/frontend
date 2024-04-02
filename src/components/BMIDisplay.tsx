@@ -1,5 +1,4 @@
 import "bootstrap/dist/js/bootstrap.min.js";
-import { CSSProperties, useRef, useState } from "react";
 
 interface Props {
     bmi: string;

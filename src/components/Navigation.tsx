@@ -37,10 +37,6 @@ function Navigation({ isAuthenticated, onLogin, onSignOut }: Props) {
         onLogin(emailInput, passwordInput);
     };
 
-    const signUp = async () => {
-        onSignUp(emailInput, passwordInput);
-    };
-
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid justify-content-between">
@@ -88,7 +84,7 @@ function Navigation({ isAuthenticated, onLogin, onSignOut }: Props) {
                                     Login
                                 </Button>
                                 <button
-                                    className="btn btn-primary text-nowrap"
+                                    className="btn btn-outline-primary text-nowrap"
                                     data-bs-toggle="modal"
                                     data-bs-target="#modalSignUpForm"
                                     type="button"

@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import Button from "./Button";
 
 interface Props {
     signin: (username: string, password: string) => void;
@@ -108,7 +107,7 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                     We'll never share your email with anyone else.
                                 </small>
                             </div>
-                            <div className="form-group">
+                            <div className="form-group mt-3">
                                 <label htmlFor="Username">Username</label>
                                 <input
                                     ref={usernameValidationInput}
@@ -125,7 +124,7 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                 />
                                 <div className="invalid-feedback" ref={usernameValidation}></div>
                             </div>
-                            <div className="form-group">
+                            <div className="form-group mt-3">
                                 <label htmlFor="userPassword">Password</label>
                                 <input
                                     type="password"
@@ -137,9 +136,10 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                     id="userPassword"
                                     placeholder="Password"
                                     value={passwordInput}
+                                    min={6}
                                 />
                             </div>
-                            <div className="form-group">
+                            <div className="form-group mt-3">
                                 <label htmlFor="verifyUserPassword">Verify User Password</label>
                                 <input
                                     type="password"
@@ -151,6 +151,7 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                     className="form-control"
                                     id="verifyUserPassword"
                                     placeholder="Verify Password"
+                                    min={6}
                                 />
                                 <div className="invalid-feedback" ref={passwordValidation}></div>
                             </div>
