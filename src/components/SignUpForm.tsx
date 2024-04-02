@@ -4,12 +4,12 @@ interface Props {
     signin: (username: string, password: string) => void;
     username?: string;
     password?: string;
+    setUsername: React.Dispatch<React.SetStateAction<string>>;
+    setPassword: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function SignUpForm({ signin, username = "", password = "" }: Props) {
+function SignUpForm({ signin, setUsername, setPassword, username = "", password = "" }: Props) {
     const [email, setEmail] = useState<string>("");
-    const [usernameInput, setUsername] = useState<string>(username);
-    const [passwordInput, setPassword] = useState<string>(password);
     const [verifyPassword, setVerifyPassword] = useState<string>("");
 
     const emailValidation = useRef<HTMLDivElement>(null);
@@ -23,10 +23,10 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
     const closeButton = useRef<HTMLButtonElement>(null);
 
     const checkPassword = async () => {
-        if (passwordInput == verifyPassword) {
+        if (password == verifyPassword) {
             const success = await signup();
             if (success) {
-                await signin(usernameInput, passwordInput);
+                await signin(username, password);
                 closeButton.current?.click();
             }
         } else if (passwordValidation.current != null) {
@@ -45,8 +45,8 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
             },
             body: JSON.stringify({
                 email: email,
-                username: usernameInput,
-                password: passwordInput,
+                username: username,
+                password: password,
             }),
         });
 
@@ -120,7 +120,7 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                     className="form-control"
                                     id="username"
                                     placeholder="Username"
-                                    value={usernameInput}
+                                    value={username}
                                 />
                                 <div className="invalid-feedback" ref={usernameValidation}></div>
                             </div>
@@ -135,7 +135,7 @@ function SignUpForm({ signin, username = "", password = "" }: Props) {
                                     className="form-control"
                                     id="userPassword"
                                     placeholder="Password"
-                                    value={passwordInput}
+                                    value={password}
                                     min={6}
                                 />
                             </div>

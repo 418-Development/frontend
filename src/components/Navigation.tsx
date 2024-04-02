@@ -9,13 +9,14 @@ interface Props {
     isAuthenticated: boolean;
     onLogin: (email: string, password: string) => void;
     onSignOut: () => void;
+    onSignUp: (email: string, password: string) => void;
 }
 
-function Navigation({ isAuthenticated, onLogin, onSignOut }: Props) {
+function Navigation({ isAuthenticated, onLogin, onSignOut, onSignUp }: Props) {
     const navigate = useNavigate();
     const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
-    const [emailInput, setEmailInput] = useState<string>("");
+    const [usernameInput, setUsernameInput] = useState<string>("");
     const [passwordInput, setPasswordInput] = useState<string>("");
 
     const toggleNav = () => setIsNavCollapsed(!isNavCollapsed);
@@ -34,7 +35,7 @@ function Navigation({ isAuthenticated, onLogin, onSignOut }: Props) {
     }, []);
 
     const login = async () => {
-        onLogin(emailInput, passwordInput);
+        onLogin(usernameInput, passwordInput);
     };
 
     return (
@@ -60,12 +61,12 @@ function Navigation({ isAuthenticated, onLogin, onSignOut }: Props) {
                             <input
                                 className="form-control form-control-sm mb-2 mb-lg-0 me-lg-2"
                                 type="text"
-                                value={emailInput}
-                                onChange={(e) => setEmailInput(e.target.value)}
+                                value={usernameInput}
+                                onChange={(e) => setUsernameInput(e.target.value)}
                                 id="email"
                                 autoComplete="username"
                                 placeholder="Username"
-                                aria-label="Email"
+                                aria-label="Username"
                                 style={{ height: "40px" }}
                             />
                             <input
@@ -88,6 +89,9 @@ function Navigation({ isAuthenticated, onLogin, onSignOut }: Props) {
                                     data-bs-toggle="modal"
                                     data-bs-target="#modalSignUpForm"
                                     type="button"
+                                    onClick={() => {
+                                        onSignUp(usernameInput, passwordInput);
+                                    }}
                                 >
                                     Sign Up
                                 </button>

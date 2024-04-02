@@ -9,6 +9,9 @@ import SignUpForm from "./components/SignUpForm";
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+
     useEffect(() => {
         if (document.cookie.startsWith("token=")) {
             setIsAuthenticated(true);
@@ -42,6 +45,13 @@ function App() {
         console.log(url, response.ok, response.status);
     };
 
+    const singUp = async (username: string, password: string) => {
+        console.log("username", username, "password", password);
+
+        setUsername(username);
+        setPassword(password);
+    };
+
     const signOut = async () => {
         console.log("signOut");
         document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
@@ -60,13 +70,20 @@ function App() {
                                 isAuthenticated={isAuthenticated}
                                 onLogin={login}
                                 onSignOut={signOut}
+                                onSignUp={singUp}
                             />
 
                             <div className="container mt-3">
                                 {isAuthenticated ? <BMICalculatorForm signOut={signOut} /> : <BMICalculatorWelcome />}
                             </div>
 
-                            <SignUpForm signin={login}></SignUpForm>
+                            <SignUpForm
+                                signin={login}
+                                username={username}
+                                password={password}
+                                setPassword={setPassword}
+                                setUsername={setUsername}
+                            ></SignUpForm>
                         </>
                     }
                 />
