@@ -6,8 +6,7 @@
     -   [Clone the Project](#2-clone-the-project)
 -   [Usage](#usage)
     -   [Install dependencies](#1-install-dependencies)
-    -   [Setup firebase](#2-setup-firebase)
-    -   [Start the project](#3-start-the-project)
+    -   [Start the project](#2-start-the-project)
 -   [Contributing](#contributing)
     -   [Create a new Task](#1-create-a-new-task)
     -   [Local setup](#2-local-setup)
@@ -85,11 +84,7 @@ cd C:/Users/marcb/Projects/418-Development/frontend
 npm i
 ```
 
-### 2. Setup Firebase
-
--   Replace the `/src/FirebaseConfig.ts` with your own config.
-
-### 3. Start the Project
+### 2. Start the Project
 
 To start the development server run:
 
